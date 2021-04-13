@@ -1,6 +1,5 @@
 package com.android.cast.dlna.dmr;
 
-import android.widget.VideoView;
 
 /**
  *
@@ -17,46 +16,78 @@ public interface IDLNARenderControl {
     long getPosition();
 
     long getDuration();
+    /**是否有播放器(已在播放界面)*/
+    boolean hasPlayer();
 
     // -------------------------------------------------------------------------------------------
     // - VideoView impl
     // -------------------------------------------------------------------------------------------
     final class VideoViewRenderControl implements IDLNARenderControl {
 
-        private final VideoView videoView;
+        private VideoViewControlListener videoViewControlListener;
 
-        public VideoViewRenderControl(VideoView videoView) {
-            this.videoView = videoView;
+        public VideoViewRenderControl(VideoViewControlListener videoViewControlListener) {
+            this.videoViewControlListener = videoViewControlListener;
         }
 
         @Override
         public void play() {
-            videoView.start();
+            if(videoViewControlListener != null) {
+                videoViewControlListener.play();
+            }
         }
 
         @Override
         public void pause() {
-            videoView.pause();
+            if(videoViewControlListener != null) {
+                videoViewControlListener.pause();
+            }
         }
 
         @Override
         public void seek(long position) {
-            videoView.seekTo((int) position);
+            if(videoViewControlListener != null) {
+                videoViewControlListener.seek(position);
+            }
         }
 
         @Override
         public void stop() {
-            videoView.stopPlayback();
+            if(videoViewControlListener != null) {
+                videoViewControlListener.stop();
+            }
         }
 
         @Override
         public long getPosition() {
-            return videoView.getCurrentPosition();
+            if(videoViewControlListener != null) {
+                return videoViewControlListener.getPosition();
+            }
+            return 0;
         }
 
         @Override
         public long getDuration() {
-            return videoView.getDuration();
+            if(videoViewControlListener != null) {
+                return videoViewControlListener.getDuration();
+            }
+            return 0;
+        }
+
+        /**是否有播放器(已在播放界面)*/
+        @Override
+        public boolean hasPlayer(){
+            if(videoViewControlListener != null) {
+                return videoViewControlListener.hasPlayer();
+            }
+            return false;
+        }
+
+        /**
+         * 释放
+         * */
+        public void realse(){
+            videoViewControlListener = null;
         }
     }
 
@@ -91,6 +122,11 @@ public interface IDLNARenderControl {
         @Override
         public long getDuration() {
             return 0L;
+        }
+
+        @Override
+        public boolean hasPlayer() {
+            return false;
         }
     }
 }

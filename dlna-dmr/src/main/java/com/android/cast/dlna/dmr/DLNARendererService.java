@@ -6,8 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.IBinder;
 
-import androidx.core.content.ContextCompat;
-
 import com.android.cast.dlna.core.Utils;
 import com.android.cast.dlna.dmr.IDLNARenderControl.DefaultRenderControl;
 import com.android.cast.dlna.dmr.service.AVTransportController;
@@ -45,6 +43,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.UUID;
 
+import androidx.core.content.ContextCompat;
+
 /**
  *
  */
@@ -60,6 +60,8 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
     private LastChange mAudioControlLastChange;
     private final RendererServiceBinder mBinder = new RendererServiceBinder();
     private LocalDevice mRendererDevice;
+
+    private AVTransportController mAVTransportController;
 
     @Override
     protected UpnpServiceConfiguration createConfiguration() {
@@ -77,6 +79,7 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
         super.onCreate();
         String ipAddress = Utils.getWiFiInfoIPAddress(getApplicationContext());
         mRenderControlManager.addControl(new AudioRenderController(getApplicationContext()));
+        mAVTransportController = new AVTransportController(getApplicationContext(), new DefaultRenderControl());
         mRenderControlManager.addControl(new AVTransportController(getApplicationContext(), new DefaultRenderControl()));
         try {
             mRendererDevice = createRendererDevice(getApplicationContext(), ipAddress);
@@ -114,7 +117,12 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
     }
 
     public void setRenderControl(IDLNARenderControl control) {
-        mRenderControlManager.addControl(new AVTransportController(getApplicationContext(), control));
+        mAVTransportController = new AVTransportController(getApplicationContext(), control);
+        mRenderControlManager.addControl(mAVTransportController);
+    }
+
+    public AVTransportController getAVTransportController(){
+        return mAVTransportController;
     }
 
     // -------------------------------------------------------------------------------------------
