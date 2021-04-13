@@ -7,8 +7,11 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 30
+        //此处版本太高，VideoView播放爱奇艺投屏失败
+        //minSdkVersion 21
+        //targetSdkVersion 30
+        minSdkVersion 14
+        targetSdkVersion 18
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"

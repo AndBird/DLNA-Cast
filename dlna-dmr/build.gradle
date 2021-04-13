@@ -7,8 +7,11 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 30
+        //此处版本太高，VideoView播放爱奇艺投屏失败
+        //minSdkVersion 21
+        //targetSdkVersion 30
+        minSdkVersion 14
+        targetSdkVersion 18
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -24,6 +27,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+
+    //去重复的引用,这是由于引入jetty引起的文件重复
+    /*packagingOptions {
+        exclude 'META-INF/beans.xml'
+    }*/
 }
 
 dependencies {
@@ -34,6 +42,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    //使用本地dlna-core
     //noinspection GradleDependency
     api 'org.eclipse.jetty:jetty-server:8.1.21.v20160908'
     //noinspection GradleDependency
@@ -42,6 +51,19 @@ dependencies {
     api 'org.eclipse.jetty:jetty-client:8.1.21.v20160908'
 
     api(project(':dlna-core'))
+
+   /* //dlna
+    // Cling library
+    implementation 'org.fourthline.cling:cling-core:2.1.1'
+    implementation 'org.fourthline.cling:cling-support:2.1.1'
+    // Jetty library
+    implementation 'org.eclipse.jetty:jetty-server:8.1.21.v20160908'
+    implementation 'org.eclipse.jetty:jetty-servlet:8.1.21.v20160908'
+    implementation 'org.eclipse.jetty:jetty-client:8.1.21.v20160908'
+
+    // 日志管理
+    implementation 'org.slf4j:slf4j-simple:1.7.21'
+    //end dlan*/
 }
 
 apply from: "../jcenter.gradle"

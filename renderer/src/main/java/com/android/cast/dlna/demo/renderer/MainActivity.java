@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.cast.dlna.core.Utils;
 import com.android.cast.dlna.dmr.DLNARendererService;
-import com.permissionx.guolindev.PermissionX;
+//import com.permissionx.guolindev.PermissionX;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,9 +16,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        PermissionX.init(this)
+        /*PermissionX.init(this)
                 .permissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
-                .request((allGranted, grantedList, deniedList) -> resetWifiInfo());
+                .request((allGranted, grantedList, deniedList) -> resetWifiInfo());*/
         DLNARendererService.startService(this);
     }
 
